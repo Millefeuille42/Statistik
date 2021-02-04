@@ -1,0 +1,5 @@
+{
+  "tempFilePath": "./.temp.json",
+  "statsPath": "./Statistics.sav",
+  "statsOutputDirectory": "./"
+}
