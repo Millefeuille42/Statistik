@@ -26,17 +26,15 @@ func microCli(conf conf) {
 			}
 			runState = true
 			fmt.Println("\tRun Started")
-			runStart(conf.TempFilePath, conf.StatsPath)
+			_ = runStart(conf.TempFilePath, conf.StatsPath)
 
 		case text == "stop":
-			if !runState {
-				fmt.Println("No run started")
+			if err := runEnd(conf.TempFilePath, conf.StatsPath, conf); err != nil {
+				fmt.Println(err)
 				continue
 			}
 			runState = false
 			fmt.Println("\tRun Ended")
-			runEnd(conf.TempFilePath, conf.StatsPath, conf)
-
 		case text == "exit":
 			if runState {
 				fmt.Println("Exit current run before exiting")

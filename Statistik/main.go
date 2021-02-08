@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -22,6 +23,7 @@ func runStart(tempPath, statPath string) error {
 func runEnd(tempPath, statPath string, conf conf) error {
 	best, total, err := readFile(statPath)
 	if err != nil {
+		fmt.Println("No run started")
 		return err
 	}
 
@@ -31,29 +33,29 @@ func runEnd(tempPath, statPath string, conf conf) error {
 		return err
 	}
 
-	err = os.Remove(tempPath)
-	if logError(err) {
-		return err
-	}
 
 	newScore.RunDate = time.Now()
 	for k := range oldScore.Total {
 		if oldScore.Total[k] != 0 && oldScore.Total[k] != newScore.Total[k]{
-			newScore.Total[fmt.Sprintf("%s_percent", k)] = (newScore.Total[k] / oldScore.Total[k]) * 100
+			newScore.Total[fmt.Sprintf("%s_percent", k)] = ((newScore.Total[k] - oldScore.Total[k]) / oldScore.Total[k]) * 100
 		}
 		newScore.Total[k] -= oldScore.Total[k]
 	}
-	newScore.Total["run_approx_duration_min"] = time.Since(oldScore.RunDate).Minutes()
-
-	err = writeJsonFile(fmt.Sprintf("%s/%s", conf.StatsOutputDirectory, newScore.RunDate.Format(time.Stamp)), newScore)
+	fName := strings.Replace(newScore.RunDate.Format(time.Stamp), ":", "_", -1)
+	fName = strings.Replace(fName, " ", "_", -1)
+	err = writeJsonFile(fmt.Sprintf("%s/%s.stats", conf.StatsOutputDirectory, fName), newScore)
 	if err != nil {
+		return err
+	}
+	err = os.Remove(tempPath)
+	if logError(err) {
 		return err
 	}
 	return nil
 }
 
 func main() {
-	conf, err := readConfFile("./synthetikScanner_conf.json")
+	conf, err := readConfFile("./statistik_conf.json")
 	if err != nil {
 		return
 	}
