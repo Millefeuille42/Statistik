@@ -23,11 +23,11 @@ Start the app by starting it like any other app, it will then open a terminal fo
 -   `start`: Start collecting data, use this command before starting your run.
     
 -   `stop`: Stop collecting data and generate the run data, 
-    use this command after your run is over (once you're back to the lobby).
+    use this command after your run is over (once you're back to the lobby, press the to launcher button in the quit menu on the upper-right corner)).
     
 -   `exit`: Exit the program
 
-##Known Bugs
+## Known Bugs
 - Backslashes (&#92;) Are not currently supported however,
 even in Windows styled path you can use forward slashes (/). If you absolutely want backslashes,
 you'll have to double them. (&#92;&#92;)
@@ -36,6 +36,9 @@ you'll have to double them. (&#92;&#92;)
   sometimes because of bad JSON formatting. I'm currently working on this.
   In the meantime you can test jour temp JSON file on an online tester and fix the formatting yourself (sorry T_T).
   In this case, you can then launch the command stop, again, to create your stat file.
+
+- Windows Defender might start a scan, wait 10 sec, and restart the app.
+
 ## Roadmap
 - Proper Graphical Interface
 - Plots and Graphics
